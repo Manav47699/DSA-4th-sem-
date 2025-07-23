@@ -29,19 +29,23 @@ using namespace std;
 
 void selection_sort(int a[], int n)
 {
+    
     int i, j, min, pos, temp;
     for (i = 0; i < n - 1; i++)
     {
+        // assume the 1st element is the smallest one
         min = a[i];
         pos = i;
         for (j = i + 1; j < n; j++)
         {
+            //the the next element is found to be larger, swap it with the minimum one
             if (a[j] < min)
             {
                 min = a[j];
                 pos = j;
             }
         }
+        // if the position i is not at the smallest position, swap it
         if (i != pos)
         {
             temp = a[i];

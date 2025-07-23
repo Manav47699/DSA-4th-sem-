@@ -3,12 +3,14 @@
 #define max 200000
 
 using namespace std;
+
+//Bubble sort works by repatedly comparing the next element with the current elemnet and if the current element is bigger than the next element, swap.
 void bubble_sort(int a[], int n)
 {
     int j, k, temp;
-    for (int i = 0; i < n-1; i++)
+    for (int i = 0; i < n-1; i++)           // total elments
     {
-        for (int j = 0; j < n-1-1; j++)
+        for (int j = 0; j < n-1-i; j++)     // total elements - the sorted elements
         {
             if(a[j]>a[j+1])
             {
