@@ -4,6 +4,8 @@
 using namespace std;
 
 
+
+// inseration sort: There is like a curtain, that is increase by 1 at each pass. the LHS of the curtain is sorted and the RHS is unsorted. At the end , the curtain reaches the end and all the elements are kept at the LHS meaning they are all sorted.
 void insertion_sort(int a[], int n)
 {
     int i, j, min, pos, temp;

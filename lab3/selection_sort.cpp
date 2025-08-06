@@ -27,11 +27,13 @@ using namespace std;
 //     }
 // }
 
+
+// selection sort: The first element is compared witht the rest of the array. If any smaller element is found, it is swapped. When we do this in 1st pass, the first elemnet is now sorted. so in 2nd pass we start with 2nd element
 void selection_sort(int a[], int n)
 {
     
-    int i, j, min, pos, temp;
-    for (i = 0; i < n - 1; i++)
+    int i, j, min, pos, temp; 
+    for (i = 0; i < n - 1; i++)   //selection sort requires 'n-1' passses
     {
         // assume the 1st element is the smallest one
         min = a[i];
