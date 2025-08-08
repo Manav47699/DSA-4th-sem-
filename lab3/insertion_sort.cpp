@@ -6,27 +6,17 @@ using namespace std;
 
 
 // inseration sort: There is like a curtain, that is increase by 1 at each pass. the LHS of the curtain is sorted and the RHS is unsorted. At the end , the curtain reaches the end and all the elements are kept at the LHS meaning they are all sorted.
-void insertion_sort(int a[], int n)
-{
-    int i, j, min, pos, temp;
-    for (i = 0; i < n - 1; i++)
-    {
-        min = a[i];
-        pos = i;
-        for (j = i + 1; j < n; j++)
-        {
-            if (a[j] < min)
-            {
-                min = a[j];
-                pos = j;
-            }
+void insertion_sort(int a[], int n){
+    for(int i = 1; i < n; i++){           //we start with 1 as we consider 1st elment to be sorted
+        int j = i - 1;
+        int temp = a[i];
+
+        while(j >= 0 && temp < a[j]){
+            a[j + 1] = a[j];
+            j = j - 1;
         }
-        if (i != pos)
-        {
-            temp = a[i];
-            a[i] = a[pos];
-            a[pos] = temp;
-        }
+
+        a[j + 1] = temp;
     }
 }
 

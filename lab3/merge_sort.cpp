@@ -1,5 +1,8 @@
 #include<iostream>
 #include<cmath>
+#include <time.h>
+#define max 200000
+using namespace std;
 
 #define ARR_SIZE 10
 
@@ -38,18 +41,35 @@ void MergeSort(int a[], int l, int r){
 }
 
 
-void printArray(int a[], int n){
-    for(int i=0; i<n; i++){
-        cout << a[i] << "\t";
+void display(int a[], int n)
+{
+    int i;
+    for ( i = 0; i < n; i++)
+    {
+        cout << a[i] << " ";
     }
     cout << endl;
 }
 
-int main(){
-    int a[ARR_SIZE] = {12, 17, 2, -1, 0, 1, 15, 100, 8, 19};
+int main()
+{
+    int i, a[max], n;
+    srand(time(NULL));
+    time_t t1, t2;
+    double d;
+    cout << "enter n:" << endl;
+    cin >> n;
+    for ( i = 0; i < n; i++)
+    {
+        a[i] = rand()%1000;
+    }
+    display(a, n);
+    t1 = time(NULL);
+    MergeSort(a, n);
+    t2 = time(NULL);
 
-    printArray(a, ARR_SIZE);
-    MergeSort(a, 0, ARR_SIZE-1);
-    printArray(a, ARR_SIZE);
-    
-};
+    display(a, n);
+    d = difftime(t2, t1);
+    cout << "The time is :" << d;
+    return 0;
+}

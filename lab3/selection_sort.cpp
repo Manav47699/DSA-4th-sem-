@@ -47,7 +47,7 @@ void selection_sort(int a[], int n)
                 pos = j;
             }
         }
-        // if the position i is not at the smallest position, swap it
+        // this block is activated if min elemnet is changed
         if (i != pos)
         {
             temp = a[i];
