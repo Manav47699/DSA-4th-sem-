@@ -1,276 +1,198 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include <iostream>
+using namespace std;
 
-typedef struct AVLTree {
-    int data;
-    int height;
-    struct AVLTree *left;
-    struct AVLTree *right;
-    struct AVLTree *parent;
-} AVLTree;
-
-AVLTree *root = NULL;
-
-int get_height(AVLTree *node) {
-    return node ? node->height : 0;
-}
-
-int max(int a, int b) {
-    return (a > b) ? a : b;
-}
-
-AVLTree* create_node(int value) {
-    AVLTree *newNode = (AVLTree*)malloc(sizeof(AVLTree));
-    newNode->data = value;
-    newNode->left = newNode->right = newNode->parent = NULL;
-    newNode->height = 1;
-    return newNode;
-}
-
-int get_balance(AVLTree *node) {
-    if (!node) return 0;
-    return get_height(node->left) - get_height(node->right);
-}
-
-// Rotations
-AVLTree* right_rotate(AVLTree *y) {
-    AVLTree *x = y->left;
-    AVLTree *T2 = x->right;
-
-    x->right = y;
-    y->left = T2;
-
-    if (T2) T2->parent = y;
-    x->parent = y->parent;
-    y->parent = x;
-
-    y->height = max(get_height(y->left), get_height(y->right)) + 1;
-    x->height = max(get_height(x->left), get_height(x->right)) + 1;
-
-    return x;
-}
-
-AVLTree* left_rotate(AVLTree *x) {
-    AVLTree *y = x->right;
-    AVLTree *T2 = y->left;
-
-    y->left = x;
-    x->right = T2;
-
-    if (T2) T2->parent = x;
-    y->parent = x->parent;
-    x->parent = y;
-
-    x->height = max(get_height(x->left), get_height(x->right)) + 1;
-    y->height = max(get_height(y->left), get_height(y->right)) + 1;
-
-    return y;
-}
-
-// Insert
-AVLTree* insert(AVLTree* node, int value) {
-    if (node == NULL)
-        return create_node(value);
-
-    if (value < node->data) {
-        node->left = insert(node->left, value);
-        node->left->parent = node;
-    } else if (value > node->data) {
-        node->right = insert(node->right, value);
-        node->right->parent = node;
-    } else {
-        return node; // No duplicates
-    }
-
-    node->height = max(get_height(node->left), get_height(node->right)) + 1;
-
-    int balance = get_balance(node);
-
-    // LL
-    if (balance > 1 && value < node->left->data)
-        return right_rotate(node);
-
-    // RR
-    if (balance < -1 && value > node->right->data)
-        return left_rotate(node);
-
-    // LR
-    if (balance > 1 && value > node->left->data) {
-        node->left = left_rotate(node->left);
-        return right_rotate(node);
-    }
-
-    // RL
-    if (balance < -1 && value < node->right->data) {
-        node->right = right_rotate(node->right);
-        return left_rotate(node);
-    }
-
-    return node;
-}
-
-// Find minimum
-AVLTree* find_min(AVLTree *node) {
-    while (node && node->left)
-        node = node->left;
-    return node;
-}
-
-// Delete
-AVLTree* delete_node(AVLTree* root, int key) {
-    if (root == NULL)
-        return root;
-
-    if (key < root->data) {
-        root->left = delete_node(root->left, key);
-        if (root->left) root->left->parent = root;
-    } else if (key > root->data) {
-        root->right = delete_node(root->right, key);
-        if (root->right) root->right->parent = root;
-    } else {
-        if (root->left == NULL || root->right == NULL) {
-            AVLTree *temp = root->left ? root->left : root->right;
-            if (temp) temp->parent = root->parent;
-            free(root);
-            return temp;
+class TreeNode {
+    public:
+        int value;
+        TreeNode *left;
+        TreeNode *right;
+    
+    // default constructor
+        TreeNode() {
+            value = 0;
+            left = NULL;
+            right = NULL;
         }
 
-        AVLTree *temp = find_min(root->right);
-        root->data = temp->data;
-        root->right = delete_node(root->right, temp->data);
-        if (root->right) root->right->parent = root;
+    //parameterized constructor
+        TreeNode(int v)
+        {
+            value = v;
+            left = NULL;
+            right = NULL;
+        }
+};
+
+
+class AVLtree 
+{
+    public:
+        TreeNode *root;   
+        AVLtree()
+        {
+            root = NULL;
+        }
+
+// Boolen function returns true or false
+        bool isTreeEmpty()
+        {
+            if (root==NULL)
+            {
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+
+//gets the height of left and right subtree recursivley
+        int get_height(TreeNode *r)
+        {
+            if (r == NULL)
+            {
+                return -1;
+            }
+            else{
+                // calculating height of subtrees
+                int lheight = get_height(r->left);
+                int rheight = get_height(r->right);
+
+                //using only the longer subnode
+                if (lheight > rheight)
+                {
+                    return (lheight + 1);
+                }
+                else 
+                {
+                    return (rheight + 1);
+                }
+            }
+        }
+//
+        int balance_factor(TreeNode *n)
+        {
+            if (n == NULL)
+            {
+                return -1;
+            }
+            return get_height(n->left) - get_height(n->right);
+        }
+
+        TreeNode *right_rotate(TreeNode *y)
+        {
+            TreeNode *x = y->left;
+            TreeNode *T2 = x->right;
+
+            x->right = y;
+            y->left = T2;
+
+            return x;
+        }
+        TreeNode *left_rotate(TreeNode *x)
+        {
+            TreeNode *y = x->right;
+            TreeNode *T2 = y->left;
+
+            y->left = x;
+            x->right = T2;
+
+            return y;
+        }
+        TreeNode *insert(TreeNode *r, TreeNode *new_node)
+        {
+            if (r == NULL)
+            {
+                r = new_node;
+                cout << "Value inserted successfully" << endl;
+                return r;
+            }
+            if (new_node->value < r->value)
+            {
+                r->left = insert(r->left, new_node);
+            }
+            else if(new_node->value > r->value)
+            {
+                r->right = insert(r->right, new_node);
+            }
+            else{
+                cout << "Duplicate values are invalid" << endl;
+                return r;
+            }
+
+            int bf = balance_factor(r);
+
+            // LL Case
+            if (bf > 1 && new_node->value < r->left->value)
+            {
+                return right_rotate(r);
+            }
+            // RR Case
+            if (bf < -1 && new_node->value > r->right->value)
+            {
+                return left_rotate(r);
+            }
+            // LR Case
+            if (bf > 1 && new_node->value > r->left->value)
+            {
+                r->left = left_rotate(r->left);
+                return right_rotate(r);
+            }
+            // RL Case
+            if (bf < -1 && new_node->value < r->right->value)
+            {
+                r->right = right_rotate(r->right);
+                return left_rotate(r);
+            }
+
+            return r;
+        }
+        void insert_value(int v) {
+        TreeNode *new_node = new TreeNode(v);
+        root = insert(root, new_node);
     }
 
-    root->height = max(get_height(root->left), get_height(root->right)) + 1;
-
-    int balance = get_balance(root);
-
-    // LL
-    if (balance > 1 && get_balance(root->left) >= 0)
-        return right_rotate(root);
-
-    // LR
-    if (balance > 1 && get_balance(root->left) < 0) {
-        root->left = left_rotate(root->left);
-        return right_rotate(root);
+    // Display in different orders
+    void inorder(TreeNode *r) {
+        if (r == NULL) return;
+        inorder(r->left);
+        cout << r->value << " ";
+        inorder(r->right);
     }
 
-    // RR
-    if (balance < -1 && get_balance(root->right) <= 0)
-        return left_rotate(root);
-
-    // RL
-    if (balance < -1 && get_balance(root->right) > 0) {
-        root->right = right_rotate(root->right);
-        return left_rotate(root);
+    void preorder(TreeNode *r) {
+        if (r == NULL) return;
+        cout << r->value << " ";
+        preorder(r->left);
+        preorder(r->right);
     }
 
-    return root;
-}
-
-// Search
-AVLTree* search(AVLTree* root, int key) {
-    if (!root || root->data == key)
-        return root;
-    else if (key < root->data)
-        return search(root->left, key);
-    else
-        return search(root->right, key);
-}
-
-// Traversals
-void inorder(AVLTree *node) {
-    if (node) {
-        inorder(node->left);
-        printf("%d ", node->data);
-        inorder(node->right);
+    void postorder(TreeNode *r) {
+        if (r == NULL) return;
+        postorder(r->left);
+        postorder(r->right);
+        cout << r->value << " ";
     }
-}
+};
 
-void preorder(AVLTree *node) {
-    if (node) {
-        printf("%d ", node->data);
-        preorder(node->left);
-        preorder(node->right);
-    }
-}
-
-void postorder(AVLTree *node) {
-    if (node) {
-        postorder(node->left);
-        postorder(node->right);
-        printf("%d ", node->data);
-    }
-}
-
-// Free tree
-void free_tree(AVLTree *node) {
-    if (!node) return;
-    free_tree(node->left);
-    free_tree(node->right);
-    free(node);
-}
-
-// Main
 int main() {
-    int choice, value;
-    AVLTree *temp;
+    AVLtree avl;
 
-    do {
-        printf("\n1. INSERT\n2. DELETE\n3. SEARCH\n4. INORDER\n5. PREORDER\n6. POSTORDER\n7. EXIT\n");
-        printf("Enter your choice: ");
-        scanf("%d", &choice);
+    avl.insert_value(30);
+    avl.insert_value(20);
+    avl.insert_value(40);
+    avl.insert_value(10);
+    avl.insert_value(25);
+    avl.insert_value(50);
 
-        switch (choice) {
-            case 1:
-                printf("Enter value to insert: ");
-                scanf("%d", &value);
-                root = insert(root, value);
-                printf("%d INSERTED!\n", value);
-                break;
+    cout << "\nInorder   : ";
+    avl.inorder(avl.root);
 
-            case 2:
-                printf("Enter value to delete: ");
-                scanf("%d", &value);
-                root = delete_node(root, value);
-                printf("%d DELETED!\n", value);
-                break;
+    cout << "\nPreorder  : ";
+    avl.preorder(avl.root);
 
-            case 3:
-                printf("Enter value to search: ");
-                scanf("%d", &value);
-                temp = search(root, value);
-                if (temp) printf("%d FOUND!\n", value);
-                else printf("%d NOT FOUND!\n", value);
-                break;
+    cout << "\nPostorder : ";
+    avl.postorder(avl.root);
 
-            case 4:
-                printf("Inorder: ");
-                inorder(root);
-                printf("\n");
-                break;
-
-            case 5:
-                printf("Preorder: ");
-                preorder(root);
-                printf("\n");
-                break;
-
-            case 6:
-                printf("Postorder: ");
-                postorder(root);
-                printf("\n");
-                break;
-
-            case 7:
-                free_tree(root);
-                printf("Goodbye!\n");
-                break;
-
-            default:
-                printf("Invalid choice!\n");
-        }
-    } while (choice != 7);
-
+    cout << endl;
     return 0;
 }

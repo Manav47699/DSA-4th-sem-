@@ -11,16 +11,6 @@ G = {
 nodes = ['s', 't', 'x', 'y', 'z']
 n = len(nodes)  
 
-adj_matrix = [[0 for _ in range(5)] for _ in range(5)]
-# for i in range(5):
-#     for j in range(5):
-#         u = nodes[i]
-#         v = nodes[j]
-#         if u in G:
-#             if v in G[u]:
-#                 weight = G[u][v]
-#                 adj_matrix[i][j] = weight
-
 start = input('Enter the starting vertex: ')
 
 
@@ -35,10 +25,11 @@ def prim (G, start):      #"start" is the starting node of MST
         min_key = None
 # u: nodes that are present in out MST currently
 # v: neighbouring nodes of u
+# G[u]: a dictonary of all neighbours of u with their weight
 # G[u][v]: this gives weight of path (u,v)
         for u in selected:      
             for v in G[u]:
-                if v not in selected and G[u][v] < min_value:       
+                if v not in selected and G[u][v] < min_value:          #only take 'v' that is not already in the selected list 
                     min_value = G[u][v]
                     min_key = v
                     previous = u 
@@ -51,6 +42,7 @@ def prim (G, start):      #"start" is the starting node of MST
         weight_mst = 0
         for i in mst.keys():
             weight_mst = weight_mst + mst[i]['cost']
+            #The root (starting node) has no parent, so there’s no edge to display.
             if mst[i]['parent'] == None:
                 continue
             print(f"{mst[i]['parent']} -- {mst[i]['cost']} -- {i}")

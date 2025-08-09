@@ -9,8 +9,10 @@ using namespace std;
 void insertion_sort(int a[], int n){
     for(int i = 1; i < n; i++){           //we start with 1 as we consider 1st elment to be sorted
         int j = i - 1;
-        int temp = a[i];
+        int temp = a[i];         // stores current element
 
+        //'temp' is the element ahead of 'a[j]'
+        //we dont swap directly as insertion sort uses shifting and not swapping
         while(j >= 0 && temp < a[j]){
             a[j + 1] = a[j];
             j = j - 1;
@@ -52,3 +54,44 @@ int main()
     cout << "The time is :" << d;
     return 0;
 }
+
+
+
+
+
+
+
+
+/*
+Example for : 5 4 2 3 1
+temp = a[1] = 4
+
+j = 0 → compare 4 with a[0] = 5
+
+4 < 5 → shift 5 to the right
+Array becomes: 5 5 2 3 1
+
+j = -1 → stop while loop
+
+Place temp in a[0]:
+4 5 2 3 1
+
+✅ End of iteration 1 → Sorted part: 4 5
+
+_____________________________________________
+temp = a[2] = 2
+
+j = 1 → compare 2 with a[1] = 5 → shift right
+4 5 5 3 1
+
+j = 0 → compare 2 with a[0] = 4 → shift right
+4 4 5 3 1
+
+j = -1 → stop
+
+Place temp in a[0]:
+2 4 5 3 1
+
+✅ End of iteration 2 → Sorted part: 2 4 5
+
+*/

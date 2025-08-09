@@ -3,9 +3,10 @@
 #define max 200000
 
 using namespace std;
-int partiation(int a[], int l, int r)  // l -> left bound
+int partiation(int a[], int l, int r)  // first call (a, 0, 4)    for  5 4 2 3 1
 {
-    int x = l, y = r, pivot = a[l], temp;
+    int x = l, y = r;
+    int pivot = a[l], temp;              //at first a[0]
     while (x < y)
     {
         while (a[x] <= pivot && x <= r)
@@ -16,21 +17,20 @@ int partiation(int a[], int l, int r)  // l -> left bound
         {
             y--;
         }
+        // at the end if x crosses y, swap a[y] with pivot i.e a[x]
         if (x<y)
         {
             temp = a[x];
             a[x] = a[y];
             a[y] = temp;
     
-        }
-        
-        
-        
+        }  
         
     }
+    
     a[l] = a[y];
     a[y] = pivot;
-    return y;
+    return y;      // return the pivot's new index
     
 }
 

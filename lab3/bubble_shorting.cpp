@@ -11,7 +11,7 @@ void bubble_sort(int a[], int n)
     int j, k, temp;
     for (int i = 0; i < n-1; i++)           // all the elements are sorted after 'n-1' passes in bubblesort
     {
-        for (int j = 0; j < n-1-i; j++)     // total elements - the sorted elements
+        for (int j = 0; j < n-1-i; j++)     // total elements - the sorted elements (at the last)
         {
             if(a[j]>a[j+1])
             {
