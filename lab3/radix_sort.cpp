@@ -17,6 +17,7 @@ int get_max(int arr[], int size)
 void counting_sort(int arr[], int size, int div)
 {
     int output[size];
+    
     int count[10] = {0};
 
     // Count occurrences
@@ -42,6 +43,8 @@ void counting_sort(int arr[], int size, int div)
 void radixsort(int arr[], int size)
 {
     int m = get_max(arr, size);
+
+// here "div" decides which digit we are sorting. initallly it is 1's, then 10's ... and so on
     for (int div = 1; m / div > 0; div *= 10)
         counting_sort(arr, size, div);
 }
