@@ -24,7 +24,8 @@ parent = {
     'B': 'B',
     'C': 'C',
     'D':'D', 
-    'E':'F',
+    'E':'E',
+    'F':'F',
 }
 
 '''an example of how this works. Suppose a tree 
@@ -37,6 +38,7 @@ C -> C  (root)
         - call find(C), as C is the parent of C, we update the parent of B to be C
     - again, parent of A is updated
 '''
+# finds the parent node
 def find(node):
     # Path compression for efficiency
     if parent[node] != node:       
@@ -44,11 +46,12 @@ def find(node):
     return parent[node]
 
 # if u and v have different root, apperently means they will not form a cycle some how. so we merge we merge these 2 nodes and return True on mergeing function
+
 def merge(u, v):          #'u' is the starting node and 'v ' is the ending node
     root_u = find(u)
     root_v = find(v)
     if root_u != root_v:        
-        parent[root_v] = root_u
+        parent[root_v] = root_u     #eg u = A and v = B, then parent of [B] : A now
         return True
     return False
 
@@ -57,8 +60,13 @@ def kruskal():
     total_weight = 0
 
     for u, v, w in path:
+# u -> starting vertex
+# v -> ending vertex
+# w -> weight of the edge
+
+# if merge is True (i.e) no cycle is formed, we add the edge to mst and add the weight to total_weight
         if merge(u, v):
-            mst.append((u, v, w))
+            mst.append((u, v, w))   
             total_weight += w
 
     print("Minimum Spanning Tree path:")

@@ -30,6 +30,10 @@ void counting_sort(int arr[], int size, int div)
 
     // This loop sorts the current elments form right to left. eg: it starts with 66 i.e. arry[7] = 66. Now it extracts 1's digit i.e. 6 from it
     // so count[6] i.e 8  - 1 = 7. so 66 is stored in output[7]
+
+
+    //(arr[i] / div) % 10 → extracts the current digit we are sorting by:
+    //count[] gives the cumulative sum
     for (int i = size - 1; i >= 0; i--)
     {
         output[count[(arr[i] / div) % 10] - 1] = arr[i];

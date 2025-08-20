@@ -41,13 +41,16 @@ def dj(G, s):         # s is the source vertex or the starting vertex
     #inserting everyy vertx into the priority queue
     for vertex in G.keys():
 
-        PQ.put([cost[vertex], vertex])     #(priority, node)
+        PQ.put([cost[vertex], vertex])     #(priority, node)  # keeps samllest cost at the top
 
-    visited = []
+    visited = []    #keeps a track of elements in mst
 
-    while (len(visited) != len(G.keys())):
+    while (len(visited) != len(G.keys())):        #len(G.keys()) = 5 in our example
+#PQ.get() removes the vertex form priority queue
         _, currentvertex = PQ.get()              # _, ignores the cost value, so that only the node is stored in 'currentvertex'
         visited.append(currentvertex)
+
+        #iterate over all the neighbours of our currentvertex
         for chimeki in G[currentvertex].keys():
             
             # if the neighbours are not already finalized(i.e appended to visited[]), we may be able to improve it's cost with the relax()
@@ -65,7 +68,7 @@ def reconstruct_path(vertex, prev):
     path = vertex
     # loop untill we reach the starting vertex that has empty prev i.e no parents
     while prev[vertex] != " ":     
-        path = prev[vertex] + '->' + path
+        path = prev[vertex] + '->' + path    #prepending parent node to the path
         vertex = prev[vertex]
     return path 
 
