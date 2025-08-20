@@ -20,7 +20,8 @@ def fw(G):
     for k in range(n):            # potential intermidiate node
         for i in range(n):        #starting node
             for j in range(n):    #ending node
-                # Update dist[i][j] if a shorter path is found through k
+                # Update dist[i][j] if a shorter path is found through k 
+                # Check if going from i → k → j is shorter than the current i → j
                 if dist[i][k] + dist[k][j] < dist[i][j]:
                     dist[i][j] = dist[i][k] + dist[k][j]
 

@@ -9,9 +9,9 @@ G = {
 
 #append paths in the list 'path[]'
 path = []       # this list looks like this [('A', 'B', 1), ...........]
-for u in G:
-    for v in G[u]:
-        if (v, u, G[u][v]) not in path: 
+for u in G:                #it gets A, B, .... one at a time
+    for v in G[u]:            # it gets B and D when u = A. and so on
+        if (v, u, G[u][v]) not in path:      # cheacking reverse edge ot avoid duplicates
             path.append((u, v, G[u][v]))
 
 # Sort path by weight

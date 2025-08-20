@@ -53,11 +53,12 @@ class AVLtree
                 return -1;
             }
             else{
-                // calculating height of subtrees
+                // calculating height of subtrees recursively
                 int lheight = get_height(r->left);
                 int rheight = get_height(r->right);
 
                 //using only the longer subnode
+                //+ 1 means -> height of the subtrees + the current node
                 if (lheight > rheight)
                 {
                     return (lheight + 1);
@@ -68,7 +69,7 @@ class AVLtree
                 }
             }
         }
-//
+// balance factor must be either -1, 0 or 1
         int balance_factor(TreeNode *n)
         {
             if (n == NULL)
@@ -78,10 +79,12 @@ class AVLtree
             return get_height(n->left) - get_height(n->right);
         }
 
+        // y -> node where the imbalance occurs
+        // x -> left child of y
         TreeNode *right_rotate(TreeNode *y)
         {
             TreeNode *x = y->left;
-            TreeNode *T2 = x->right;
+            TreeNode *T2 = x->right;   //T2 stores x's right subtree
 
             x->right = y;
             y->left = T2;
@@ -98,14 +101,22 @@ class AVLtree
 
             return y;
         }
+
+
+//r -> root 
+//new_node -> node we want to insert
+//logic : insert like normal BST and then check the balance factor
         TreeNode *insert(TreeNode *r, TreeNode *new_node)
         {
+            // if there is no root, new_node becomes the root
             if (r == NULL)
             {
                 r = new_node;
                 cout << "Value inserted successfully" << endl;
                 return r;
             }
+
+            //This block is noraml BST insertion
             if (new_node->value < r->value)
             {
                 r->left = insert(r->left, new_node);
@@ -119,9 +130,14 @@ class AVLtree
                 return r;
             }
 
+
+
             int bf = balance_factor(r);
 
+
             // LL Case
+//first condition tells us "there is a left-heavy imbalance"
+//second condition tells us "the new node is in left-left position"
             if (bf > 1 && new_node->value < r->left->value)
             {
                 return right_rotate(r);
@@ -146,19 +162,22 @@ class AVLtree
 
             return r;
         }
+
+        //this creates new noe
         void insert_value(int v) {
         TreeNode *new_node = new TreeNode(v);
         root = insert(root, new_node);
     }
 
-    // Display in different orders
+    // inorder -> LDR
     void inorder(TreeNode *r) {
-        if (r == NULL) return;
+        if (r == NULL) return;   //if node is empty, do nothing
         inorder(r->left);
         cout << r->value << " ";
         inorder(r->right);
     }
 
+// preorder => DLR
     void preorder(TreeNode *r) {
         if (r == NULL) return;
         cout << r->value << " ";
@@ -166,6 +185,7 @@ class AVLtree
         preorder(r->right);
     }
 
+//postorder -> LRD
     void postorder(TreeNode *r) {
         if (r == NULL) return;
         postorder(r->left);
@@ -175,7 +195,7 @@ class AVLtree
 };
 
 int main() {
-    AVLtree avl;
+    AVLtree avl;   //object of AVL. it is used to call "root" which is a member variable
 
     avl.insert_value(30);
     avl.insert_value(20);
